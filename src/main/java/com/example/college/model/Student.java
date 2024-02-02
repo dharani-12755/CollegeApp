@@ -23,7 +23,6 @@ public class Student implements Serializable {
 
     @Id
     @Column(name = "id")
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty("id")
     private Long id;
 
