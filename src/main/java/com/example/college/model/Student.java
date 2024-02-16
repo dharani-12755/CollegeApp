@@ -43,6 +43,14 @@ public class Student implements Serializable {
     @JsonProperty("department")
     private Department department;
 
+    @Column(name = "year")
+    @JsonProperty("year")
+    private int year;
+
+    @Column(name = "current_semester")
+    @JsonProperty("current_semester")
+    private int currentSemester;
+
     @Column(name = "address")
     @JsonProperty("address")
     private String address;

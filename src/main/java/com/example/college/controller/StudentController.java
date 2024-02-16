@@ -22,7 +22,7 @@ public class StudentController {
     @Autowired
     StudentsSvcImpl studentsSvcImpl;
 
-    @PostMapping("/students")
+    @PostMapping("/students/")
     public ResponseEntity<Student> addStudent(@RequestBody Student student) {
         logger.info("received request to add a new student");
         Student newStudent = studentsSvcImpl.addStudent(student);
