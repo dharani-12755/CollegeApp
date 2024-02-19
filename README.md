@@ -54,8 +54,14 @@ Endpoint - ```/students/find/{dept}```
 
 HTTP Method - `GET`
 
+#### 6. Filter students by Department And Year
 
-#### 6. Delete a Student
+Endpoint - ```/students/find/{dept}/{year}```
+
+HTTP Method - `GET`
+
+
+#### 7. Delete a Student
 
 Endpoint - ```/students/{id}``` 
 
