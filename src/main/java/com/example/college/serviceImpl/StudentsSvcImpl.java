@@ -69,4 +69,8 @@ public class StudentsSvcImpl {
     public List<Student> getStudentsByDept(String dept) {
         return studentsRepo.findByDepartmentEquals(Department.valueOf(dept));
     }
+
+    public List<Student> getStudentsByDeptAndYear(String dept, int year) {
+        return studentsRepo.findStudentsByDepartmentAndYear(Department.valueOf(dept), year);
+    }
 }

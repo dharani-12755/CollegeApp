@@ -15,4 +15,7 @@ public interface StudentsRepo extends JpaRepository<Student, Long> {
     List<Student> findByUseCollegeBusIsTrue();
 
     List<Student> findByDepartmentEquals(Department department);
+
+    List<Student> findStudentsByDepartmentAndYear(Department department, int year);
+
 }

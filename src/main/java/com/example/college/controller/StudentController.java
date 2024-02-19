@@ -57,6 +57,13 @@ public class StudentController {
         return new ResponseEntity<>(retrievedStudent, HttpStatus.OK);
     }
 
+    @GetMapping("/students/find/{dept}/{year}")
+    public ResponseEntity<List<Student>> findStudentsByDeptAndYear(@PathVariable String dept,
+                                                                   @PathVariable int year) {
+        logger.info("received request to find students by dept and year");
+        List<Student> retrievedStudent = studentsSvcImpl.getStudentsByDeptAndYear(dept, year);
+        return new ResponseEntity<>(retrievedStudent, HttpStatus.OK);
+    }
     @DeleteMapping("/students/{id}")
     public ResponseEntity<String> deleteStudent(@PathVariable Long id) {
         logger.info("received request to delete student: {}", id);
