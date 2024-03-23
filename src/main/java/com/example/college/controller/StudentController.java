@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = { "http://localhost:3000" })
 @RestController
 @EnableAutoConfiguration
 public class StudentController {

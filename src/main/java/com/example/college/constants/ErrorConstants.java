@@ -8,7 +8,15 @@ import java.util.stream.Stream;
 
 public class ErrorConstants {
     public enum ErrorCode {
-        STUDENT_NOT_FOUND(3001, "Student not found");
+        STUDENT_NOT_FOUND(3001, "Student not found"),
+
+        BOOK_NOT_FOUND(3002, "Book not found"),
+
+        EVENT_NOT_FOUND(3003, "Event not found"),
+
+        BOOK_ALREADY_BORROWED(3004, "Book has already borrowed"),
+
+        BOOK_ALREADY_RETURNED(3005, "Book has already been returned");
 
         Integer code;
         String message;
