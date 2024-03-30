@@ -50,6 +50,10 @@ public class StudentsSvcImpl {
         }
     }
 
+    public List<Student> getAllStudents() {
+        return studentsRepo.findAll();
+    }
+
     public void deleteStudent(Long id) {
         Optional<Student> student = studentsRepo.findById(id);
         if (student.isPresent()) {

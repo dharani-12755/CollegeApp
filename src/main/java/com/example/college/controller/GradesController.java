@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin(origins = { "http://localhost:3000" })
 @RestController
 @EnableAutoConfiguration
 public class GradesController {
@@ -34,11 +35,19 @@ public class GradesController {
     }
 
     @GetMapping("/students/{studentId}/semester/{currentSemester}/grades")
-    public ResponseEntity<Grades> getGrades(@PathVariable Long studentId,
+    public ResponseEntity<List<SemesterGrades>> getGrades(@PathVariable Long studentId,
                                                           @PathVariable int currentSemester) {
         logger.info("received request to get grades for student - {} for the semester - {}",
                 studentId, currentSemester);
-        Grades allGrades =  gradesSvc.getGrades(studentId, currentSemester);
-        return new ResponseEntity<>(allGrades, HttpStatus.CREATED);
+        List<SemesterGrades> allGrades =  gradesSvc.getGrades(studentId, currentSemester);
+        return new ResponseEntity<>(allGrades, HttpStatus.OK);
+    }
+
+    @GetMapping("/students/{studentId}/semester/all/grades")
+    public ResponseEntity<Grades> getAllGrades(@PathVariable Long studentId) {
+        logger.info("received request to get grades for student - {}",
+                studentId);
+        Grades allGrades =  gradesSvc.getGrades(studentId);
+        return new ResponseEntity<>(allGrades, HttpStatus.OK);
     }
 }

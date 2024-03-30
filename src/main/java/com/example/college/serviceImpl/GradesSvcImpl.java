@@ -30,20 +30,22 @@ public class GradesSvcImpl {
     SemesterGradesRepo semesterGrades;
 
     public List<SemesterGrades> addGrade(Long studentId, int currentSemester, Map<String, String> marks) {
-        Long semesterId = IdGenerator.generateId();
         Grades grades = new Grades();
         grades.setStudentId(studentId);
-        grades.setSemester(currentSemester);
-        grades.setCgpa("currentSemester");
         grades.setPerformance("currentSemester");
-        Pair<List<SemesterGrades>, AtomicReference<Double>> allMarks
-                = convertToSemesterGrades(marks, semesterId, currentSemester);
-        grades.setGpa(allMarks.getSecond().get());
+        Pair<List<SemesterGrades>, Double> allMarks
+                = convertToSemesterGrades(marks, studentId, currentSemester);
+        grades.setGpa(allMarks.getSecond());
+        grades.setCgpa("currentSemester");
         return saveSemesterGrades(allMarks.getFirst(), grades);
     }
 
-    public Grades getGrades(Long studentId, int currentSemester) {
-        Optional<Grades> grades = gradesRepo.findByStudentIdAndSemester(studentId, currentSemester);
+    public List<SemesterGrades> getGrades(Long studentId, int currentSemester) {
+        return semesterGrades.findByStudentIdAndSemester(studentId, currentSemester);
+    }
+
+    public Grades getGrades(Long studentId) {
+        Optional<Grades> grades = gradesRepo.findByStudentId(studentId);
 
         if(grades.isPresent()) {
             return grades.get();
@@ -55,20 +57,21 @@ public class GradesSvcImpl {
         }
     }
 
-    public static Pair<List<SemesterGrades>, AtomicReference<Double>> convertToSemesterGrades(Map<String, String> marks,
-                                                                                              Long semesterId, int currentSemester) {
+    public static Pair<List<SemesterGrades>, Double> convertToSemesterGrades(Map<String, String> marks,
+                                                                                              Long studentId, int currentSemester) {
         List<SemesterGrades> semesterGradesList = new ArrayList<>();
         AtomicReference<Double> gpa = new AtomicReference<>((double) 0);
         marks.forEach((subject, grade) -> {
             gpa.set(calculateGPA(grade, gpa.get()));
             SemesterGrades semesterGrades = new SemesterGrades();
-            semesterGrades.setSemesterId(semesterId);
             semesterGrades.setSemester(currentSemester);
+            semesterGrades.setStudentId(studentId);
             semesterGrades.setSubject(subject);
             semesterGrades.setGrade(grade);
             semesterGradesList.add(semesterGrades);
         });
-        return Pair.of(semesterGradesList, gpa);
+        Double calculatedGpa = gpa.getPlain()/marks.size();
+        return Pair.of(semesterGradesList, calculatedGpa);
     }
 
     @Transactional
@@ -87,6 +90,22 @@ public class GradesSvcImpl {
             case "A" -> {
                 double aPoints = 9.0;
                 yield gpa + aPoints;
+            }
+            case "B" -> {
+                double bPoints = 8.0;
+                yield gpa + bPoints;
+            }
+            case "C" -> {
+                double cPoints = 7.0;
+                yield gpa + cPoints;
+            }
+            case "D" -> {
+                double dPoints = 6.0;
+                yield gpa + dPoints;
+            }
+            case "E" -> {
+                double dPoints = 5.0;
+                yield gpa + dPoints;
             }
             default -> gpa;
         };

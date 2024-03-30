@@ -29,10 +29,6 @@ public class Grades implements Serializable {
     @JsonProperty("student_id")
     private Long studentId;
 
-    @Column(name = "semester")
-    @JsonProperty("semester")
-    private int semester;
-
     @Column(name = "gpa")
     @JsonProperty("gpa")
     private double gpa;

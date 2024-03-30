@@ -28,9 +28,9 @@ public class SemesterGrades implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "semester_id")
-    @JsonProperty("semester_id")
-    private Long semesterId;
+    @Column(name = "student_id")
+    @JsonProperty("student_id")
+    private Long studentId;
 
     @Column(name = "semester")
     @JsonProperty("semester")

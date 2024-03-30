@@ -30,6 +30,13 @@ public class StudentController {
         return new ResponseEntity<>(newStudent, HttpStatus.CREATED);
     }
 
+    @PostMapping("/students/all")
+    public ResponseEntity<List<Student>> getStudents() {
+        logger.info("received request to get all students");
+        List<Student> allStudents = studentsSvcImpl.getAllStudents();
+        return new ResponseEntity<>(allStudents, HttpStatus.OK);
+    }
+
     @PatchMapping("/students/{id}")
     public ResponseEntity<Student> editStudent(@RequestBody Student student, @PathVariable Long id) {
         logger.info("received request to edit student: {}", id);
