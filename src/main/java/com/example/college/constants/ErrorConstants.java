@@ -16,7 +16,9 @@ public class ErrorConstants {
 
         BOOK_ALREADY_BORROWED(3004, "Book has already borrowed"),
 
-        BOOK_ALREADY_RETURNED(3005, "Book has already been returned");
+        BOOK_ALREADY_RETURNED(3005, "Book has already been returned"),
+
+        GRADES_PUBLISHED_FOR_THIS_SEM(3006, "Grades have already been published to this semester");
 
         Integer code;
         String message;

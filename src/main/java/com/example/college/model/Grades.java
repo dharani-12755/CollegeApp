@@ -33,9 +33,9 @@ public class Grades implements Serializable {
     @JsonProperty("gpa")
     private double gpa;
 
-    @Column(name = "cgpa")
-    @JsonProperty("cgpa")
-    private String cgpa;
+    @Column(name = "percentage")
+    @JsonProperty("percentage")
+    private String gpaPercentage;
 
     @Column(name = "performance")
     @JsonProperty("performance")

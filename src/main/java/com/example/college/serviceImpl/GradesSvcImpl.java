@@ -30,13 +30,25 @@ public class GradesSvcImpl {
     SemesterGradesRepo semesterGrades;
 
     public List<SemesterGrades> addGrade(Long studentId, int currentSemester, Map<String, String> marks) {
+        Grades existingGrades = getGrades(studentId);
+        List<SemesterGrades> allGrades = semesterGrades.findByStudentIdAndSemester(studentId, currentSemester);
+        if (!allGrades.isEmpty()) {
+            ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST,
+                    ErrorConstants.ErrorCode.GRADES_PUBLISHED_FOR_THIS_SEM.getCode(),
+                    ErrorConstants.ErrorCode.GRADES_PUBLISHED_FOR_THIS_SEM.getMessage());
+            throw new EntityNotFoundException(apiError, studentId);
+        }
         Grades grades = new Grades();
         grades.setStudentId(studentId);
-        grades.setPerformance("currentSemester");
         Pair<List<SemesterGrades>, Double> allMarks
                 = convertToSemesterGrades(marks, studentId, currentSemester);
-        grades.setGpa(allMarks.getSecond());
-        grades.setCgpa("currentSemester");
+        double gpa = allMarks.getSecond();
+        double cgpa = (gpa + existingGrades.getGpa())/2;
+        cgpa = Double.parseDouble(String.format("%.2f", cgpa));
+        double perc = cgpa * 10.0;
+        grades.setGpa(cgpa);
+        grades.setGpaPercentage(perc + "%");
+        grades.setPerformance(calculatePerformance(gpa));
         return saveSemesterGrades(allMarks.getFirst(), grades);
     }
 
@@ -70,8 +82,29 @@ public class GradesSvcImpl {
             semesterGrades.setGrade(grade);
             semesterGradesList.add(semesterGrades);
         });
-        Double calculatedGpa = gpa.getPlain()/marks.size();
+        double calculatedGpa = gpa.getPlain()/marks.size();
+        calculatedGpa = Double.parseDouble(String.format("%.2f", calculatedGpa));
         return Pair.of(semesterGradesList, calculatedGpa);
+    }
+
+    public static String calculatePerformance(double gpa) {
+        if (gpa >= 10) {
+            return "Exemplary Performance of Outstanding Caliber";
+        } else if (gpa >= 9.5) {
+            return "Superb Performance Marked by Excellence";
+        } else if (gpa >= 9) {
+            return "Remarkable Performance with Distinction";
+        } else if (gpa >= 8.5) {
+            return "Very Strong Performance Reflecting Excellence";
+        } else if (gpa >= 8) {
+            return "Outstanding Performance with Great Merit";
+        } else if (gpa >= 7) {
+            return "Solid Performance with Good Standing";
+        } else if (gpa >= 6) {
+            return "Satisfactory Performance Demonstrating Competence";
+        } else {
+            return "Failed";
+        }
     }
 
     @Transactional
