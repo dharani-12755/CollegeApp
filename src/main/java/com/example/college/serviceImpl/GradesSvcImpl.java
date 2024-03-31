@@ -45,10 +45,12 @@ public class GradesSvcImpl {
                 = convertToSemesterGrades(marks, studentId, currentSemester);
         double gpa = allMarks.getSecond();
         double existingGpa = 0;
+        int divideFactor = 1;
         if (existingGrades.isPresent()) {
             existingGpa = existingGrades.get().getGpa();
+            divideFactor = 2;
         }
-        double cgpa = (gpa + existingGpa)/2;
+        double cgpa = (gpa + existingGpa)/divideFactor;
         cgpa = Double.parseDouble(String.format("%.2f", cgpa));
         double perc = cgpa * 10.0;
         perc = Double.parseDouble(String.format("%.2f", perc));
