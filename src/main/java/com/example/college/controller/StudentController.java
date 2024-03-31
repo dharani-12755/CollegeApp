@@ -30,7 +30,7 @@ public class StudentController {
         return new ResponseEntity<>(newStudent, HttpStatus.CREATED);
     }
 
-    @PostMapping("/students/all")
+    @GetMapping("/students/list/all")
     public ResponseEntity<List<Student>> getStudents() {
         logger.info("received request to get all students");
         List<Student> allStudents = studentsSvcImpl.getAllStudents();

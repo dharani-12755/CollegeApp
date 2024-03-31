@@ -30,7 +30,8 @@ public class GradesSvcImpl {
     SemesterGradesRepo semesterGrades;
 
     public List<SemesterGrades> addGrade(Long studentId, int currentSemester, Map<String, String> marks) {
-        Grades existingGrades = getGrades(studentId);
+        Optional<Grades> existingGrades = gradesRepo.findByStudentId(studentId);
+
         List<SemesterGrades> allGrades = semesterGrades.findByStudentIdAndSemester(studentId, currentSemester);
         if (!allGrades.isEmpty()) {
             ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST,
@@ -43,9 +44,14 @@ public class GradesSvcImpl {
         Pair<List<SemesterGrades>, Double> allMarks
                 = convertToSemesterGrades(marks, studentId, currentSemester);
         double gpa = allMarks.getSecond();
-        double cgpa = (gpa + existingGrades.getGpa())/2;
+        double existingGpa = 0;
+        if (existingGrades.isPresent()) {
+            existingGpa = existingGrades.get().getGpa();
+        }
+        double cgpa = (gpa + existingGpa)/2;
         cgpa = Double.parseDouble(String.format("%.2f", cgpa));
         double perc = cgpa * 10.0;
+        perc = Double.parseDouble(String.format("%.2f", perc));
         grades.setGpa(cgpa);
         grades.setGpaPercentage(perc + "%");
         grades.setPerformance(calculatePerformance(gpa));
