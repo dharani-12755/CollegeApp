@@ -37,7 +37,7 @@ public class Student implements Serializable {
 
     @Column(name = "date_of_birth")
     @JsonProperty("date_of_birth")
-    private Long dateOfBirth;
+    private String dateOfBirth;
 
     @Column(name = "department")
     @JsonProperty("department")
