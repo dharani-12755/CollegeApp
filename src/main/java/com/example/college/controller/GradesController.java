@@ -50,4 +50,12 @@ public class GradesController {
         Grades allGrades =  gradesSvc.getGrades(studentId);
         return new ResponseEntity<>(allGrades, HttpStatus.OK);
     }
+
+    @GetMapping("/students/{studentId}/semester/all/semesterGrades")
+    public ResponseEntity<List<SemesterGrades>> getAllSemesterGrades(@PathVariable Long studentId) {
+        logger.info("received request to get grades for student - {}",
+                studentId);
+        List<SemesterGrades> allGrades =  gradesSvc.getSemesterGrades(studentId);
+        return new ResponseEntity<>(allGrades, HttpStatus.OK);
+    }
 }

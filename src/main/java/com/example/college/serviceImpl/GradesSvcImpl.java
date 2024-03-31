@@ -75,6 +75,10 @@ public class GradesSvcImpl {
         }
     }
 
+    public List<SemesterGrades> getSemesterGrades(Long studentId) {
+        return semesterGrades.findByStudentId(studentId);
+    }
+
     public static Pair<List<SemesterGrades>, Double> convertToSemesterGrades(Map<String, String> marks,
                                                                                               Long studentId, int currentSemester) {
         List<SemesterGrades> semesterGradesList = new ArrayList<>();

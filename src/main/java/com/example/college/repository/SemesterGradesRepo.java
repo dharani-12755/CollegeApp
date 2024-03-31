@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface SemesterGradesRepo extends JpaRepository<SemesterGrades, Long> {
 
     List<SemesterGrades> findByStudentIdAndSemester(Long studentId, int semester);
+
+    List<SemesterGrades> findByStudentId(Long studentId);
 }
